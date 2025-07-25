@@ -1,4 +1,4 @@
-(() => {
+(async () => {
 
     const tracker = {
         aiResponse: undefined,
@@ -10,7 +10,11 @@
         lastScrollTop: 0,
     }
 
-    // Setters
+    const settings = {
+        displayNavButtons: undefined,
+    }
+
+    // Setters: Tracker
     const setAiResponse = value => tracker.aiResponse = value;
     const setAiContainer = value => tracker.aiContainer = value;
     const setFAQContainer = value => tracker.faqContainer = value;
@@ -21,7 +25,7 @@
     const setCloseButton = value => tracker.closeButton = value;
     const setLastScrollTop = value => tracker.lastScrollTop = value;
 
-    // Getters
+    // Getters: Tracker
     const getAiResponse = () => tracker.aiResponse;
     const getAiContainer = () => tracker.aiContainer;
     const getFAQContainer = () => tracker.faqContainer;
@@ -31,6 +35,12 @@
     const getOpenButton = () => tracker.openButton;
     const getCloseButton = () => tracker.closeButton;
     const getLastScrollTop = () => tracker.lastScrollTop;
+
+    // Setters: Settings
+    const setDisplayNavButtons = value => settings.displayNavButtons = value;
+
+    // Getters: Settings
+    const getDisplayNavButtons = () => settings.displayNavButtons;
 
     const hide = item => {
         item.style.display = 'none';
@@ -153,11 +163,20 @@
         return inner;
     }
 
-    function generateOverlay() {
+    async function generateOverlay() {
+        const result = await new Promise(resolve => {
+            chrome.storage.local.get(['showWebResults'], data => {
+                resolve(data);
+            });
+        });
+
+        const displayNavButtons = result.showWebResults ?? true;
+        setDisplayNavButtons(displayNavButtons);
+
         const overlay = document.createElement('div');
         overlay.id = 'loaded';
         overlay.style.position = 'fixed';
-        overlay.style.top = '134px'
+        overlay.style.top = '134px';
         overlay.style.left = 0;
         overlay.style.width = '100vw';
         overlay.style.height = 'calc(100vh - 134px)';
@@ -169,32 +188,33 @@
         overlay.style.overflowY = 'scroll';
         overlay.classList.add('light');
 
-        // Generate an inner container (that has max-width)
         const innerContainer = generateInnerContainer();
         setInnerContainer(innerContainer);
 
-        // Generate the open and close buttons (not yet implemented).
-        const openButton = generateOpenButton();
-        const closeButton = generateCloseButton();
+        if (displayNavButtons) {
+            const openButton = generateOpenButton();
+            const closeButton = generateCloseButton();
 
-        // Hide the new buttons before the content loaded has resolved...is there an AI overview?
-        hide(openButton);
-        hide(closeButton);
+            hide(openButton);
+            hide(closeButton);
 
-        // Add the buttons to the tracker object.
-        setOpenButton(openButton);
-        setCloseButton(closeButton);
+            setOpenButton(openButton);
+            setCloseButton(closeButton);
 
-        // Add nodes to the inner container.
-        document.body.appendChild(openButton);
-        document.body.appendChild(closeButton);
+            document.body.appendChild(openButton);
+            document.body.appendChild(closeButton);
+        }
 
-        // Add the inner container to the overlay.
         overlay.appendChild(innerContainer);
 
-        // Return the completed* overlay.
         return overlay;
     }
+
+    setDisplayNavButtons(chrome.storage.local.get(['showWebResults'], result => result.showWebResults ?? true));
+
+    insertMediaQueries();
+
+    setOverlayContainer(await generateOverlay());
 
     const observerCallback = (mutationList, observer) => {
         const saveDivs = document.querySelectorAll('div');
@@ -235,8 +255,6 @@
 
             const aiContainer = getAiContainer();
 
-            console.log({ aiContainer });
-
             // only open the overlay if we have found an ai chat?
                 // Could still get opened for just a FAQ result, but feels less useful as those are related answers.
 
@@ -270,23 +288,6 @@
             observer.disconnect();
         }
     }
-
-    insertMediaQueries();
-
-    setOverlayContainer(generateOverlay());
-
-    chrome.storage.local.get(['showWebResults'], (result) => {
-        const shouldShow = result.showWebResults ?? true;
-
-        const openButton = getOpenButton();
-        const closeButton = getCloseButton();
-
-        if (!shouldShow) {
-            openButton.classList.add('hide-forever');
-            closeButton.classList.add('hide-forever');
-        }
-
-    });
 
     const observer = new MutationObserver(observerCallback);
     const config = { attributes: true, childList: true, subtree: true };
