@@ -2,16 +2,19 @@
 
 ## Project Goal
 
-Explore the future possibilities of search and possible implementations of user flows that could be a part of our daily lives very soon.
-
-I feel stupid building this, but I am slightly convinced that this is the clear direction that search on the internet is headed for.
-
-With optomized caching for lifes most common questions I don't understand why Google couldn't easily implement an entirely AI structure for it's search feature in first-world countries within the coming years.
+Explore the future possibilities of search and possible implementations of user flows that could be a part of our daily lives in the coming future.
 
 ## TODO
-- Remove the AI section from the "Web Results" page.
+
+Worrysome:
+- HARD(er): Only display the popup loader on the search results page (not images, short videos, etc).
+    - Use the navigation bar, maybe there are active classes on the highlighted current page.
+- UI for popup.html should be beautified.
+
+General:
 - Add custom loading animations.
 - Set a name (or use Google API console to allow for OAuth login with Google account)?
+- Sometimes AI overview will not properly transfer to the overlay, this happens when the page is reloaded numerous times.
 
 ## Initial Thoughts
 
