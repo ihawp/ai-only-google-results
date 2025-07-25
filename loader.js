@@ -1,6 +1,7 @@
 (() => {
     const tracker = {
         loader: undefined,
+        overlay: undefined,
     };
 
     function generateOverlay() {
@@ -24,7 +25,15 @@
         return overlay;
     }
 
+    // Setters
+    const setOverlay = value => tracker.overlay = value;
+
+    // Getters
+    const getOverlay = () => tracker.overlay;
+
+    // Set the overlay.
     const loadingOverlay = generateOverlay();
+    setOverlay(loadingOverlay);
 
     function insertLoader() {
         if (document.body && !document.body.contains(loadingOverlay)) {
@@ -38,13 +47,59 @@
         }
     }
 
+    function applyTheme() {
+
+        const isLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+        const html = document.documentElement;
+        const overlay = getOverlay();
+
+        let backgroundColor = '#ffffff';
+        
+        if (document.body) {
+
+            const computedStyle = window.getComputedStyle(document.body);
+            const computedBg = computedStyle.backgroundColor;
+            const theOverlay = getOverlay();
+            
+            // If body doesn't have a background, try html element
+            if (computedBg === 'rgba(0, 0, 0, 0)' || computedBg === 'transparent') {
+                const htmlComputedStyle = window.getComputedStyle(html);
+                backgroundColor = theOverlay.backgroundColor = htmlComputedStyle.backgroundColor;
+            } else {
+                backgroundColor = theOverlay.backgroundColor = computedBg;
+            }
+            
+            // If still transparent, use theme-based defaults
+            if (backgroundColor === 'rgba(0, 0, 0, 0)' || backgroundColor === 'transparent') {
+                backgroundColor = theOverlay.backgroundColor = isLight ? '#ffffff' : '#1f1f1f';
+            }
+
+            setOverlay(theOverlay);
+
+        }
+
+        if (isLight) {
+            html.classList.remove('dark');
+        } else {
+            html.classList.add('dark');
+        }
+
+        document.documentElement.style.setProperty('--background-color', backgroundColor);
+
+        setOverlay(overlay);
+    }
+
+    if (document.body) applyTheme();
+
     function waitForBodyAndInsert() {
         if (document.body) {
             insertLoader();
+            applyTheme();
         } else {
             const observer = new MutationObserver((mutations, obs) => {
                 if (document.body) {
                     insertLoader();
+                    applyTheme();
                     obs.disconnect();
                 }
             });

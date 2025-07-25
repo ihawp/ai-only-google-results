@@ -16,7 +16,8 @@
     },
     {
       "matches": ["*://www.google.com/search*", "*://www.google.ca/search*", "*://google.com/search*", "*://google.ca/search*"],
-      "js": ["inject2.js"],
+      "js": ["inject.js"],
+      "css": ["inject.css"],
       "run_at": "document_end"
     }
   ]
