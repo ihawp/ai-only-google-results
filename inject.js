@@ -7,11 +7,14 @@
         faqContainer: undefined,
         overlayContainer: undefined,
         overlayOpen: false,
+        openButton: false,
+        closeButton: false,
         lastScrollTop: 0,
     }
 
     const settings = {
         displayNavButtons: undefined,
+        showPlugin: undefined,
     }
 
     // Setters: Tracker
@@ -38,9 +41,11 @@
 
     // Setters: Settings
     const setDisplayNavButtons = value => settings.displayNavButtons = value;
+    const setShowPlugin = value => settings.showPlugin = value;
 
     // Getters: Settings
     const getDisplayNavButtons = () => settings.displayNavButtons;
+    const getShowPlugin = value => settings.showPlugin;
 
     const hide = item => {
         item.style.display = 'none';
@@ -65,7 +70,9 @@
         show(overlay, 'flex');
         setOverlayContainer(overlay);
         setOverlayOpen(true);
+
         displayOverlayButton(true);
+
     }
 
     const closeOverlay = event => {
@@ -87,21 +94,6 @@
         }
 
         displayOverlayButton(false);
-    }
-
-    const displayOverlayButton = value => {
-
-        const openButton = getOpenButton();
-        const closeButton = getCloseButton();
-
-        // Hide and show the buttons.
-        hide(value ? openButton : closeButton);
-        show(value ? closeButton : openButton, 'block');
-
-        // Store the updated button in the tracker object.
-        setOpenButton(openButton);
-        setCloseButton(closeButton);
-
     }
 
     const insertMediaQueries = () => {
@@ -156,22 +148,48 @@
         inner.style.height = 'max-content';
         inner.style.padding = '1rem';
         inner.style.paddingTop = '5rem';
+        inner.style.paddingBottom = '10rem';
         inner.style.display = 'flex';
         inner.style.flexDirection = 'column';
         inner.style.alignItems = 'center';
         inner.classList.add('light');
         return inner;
     }
+    
+    function displayOverlayButton(value) {
+
+        const openButton = getOpenButton();
+        const closeButton = getCloseButton();
+
+        if (!openButton || !closeButton) return;
+
+        // Hide and show the buttons.
+        hide(value ? openButton : closeButton);
+        show(value ? closeButton : openButton, 'block');
+
+        // Store the updated button in the tracker object.
+        setOpenButton(openButton);
+        setCloseButton(closeButton);
+
+    }
 
     async function generateOverlay() {
         const result = await new Promise(resolve => {
-            chrome.storage.local.get(['showWebResults'], data => {
+            chrome.storage.local.get(['showWebResults', 'showPlugin'], data => {
+                console.log(data);
                 resolve(data);
             });
         });
 
-        const displayNavButtons = result.showWebResults ?? true;
-        setDisplayNavButtons(displayNavButtons);
+        const showWebResults = result.showWebResults ?? false;
+        setDisplayNavButtons(showWebResults);
+
+        console.log(showWebResults);
+
+        const showPlugin = result.showPlugin ?? false;
+        setShowPlugin(showPlugin);
+
+        if (!showPlugin) return false;
 
         const overlay = document.createElement('div');
         overlay.id = 'loaded';
@@ -191,7 +209,8 @@
         const innerContainer = generateInnerContainer();
         setInnerContainer(innerContainer);
 
-        if (displayNavButtons) {
+        if (showWebResults) {
+            console.log('happening');
             const openButton = generateOpenButton();
             const closeButton = generateCloseButton();
 
@@ -210,87 +229,101 @@
         return overlay;
     }
 
-    setDisplayNavButtons(chrome.storage.local.get(['showWebResults'], result => result.showWebResults ?? true));
-
     insertMediaQueries();
 
-    setOverlayContainer(await generateOverlay());
+    const generatedOverlay = await generateOverlay();
 
-    const observerCallback = (mutationList, observer) => {
-        const saveDivs = document.querySelectorAll('div');
+    if (generatedOverlay) {
+        setOverlayContainer(generatedOverlay);
 
-        // Find the "AI Overview" title above the AI overview section.
-            // I could see this DOM element being removed if Google fully made the switch to AI centric search.
-        const findAIOverview = Array.from(saveDivs)
-            .find(item => item.innerText.trim().toLowerCase() === 'ai overview');
+        const observerCallback = (mutationList, observer) => {
+            const saveDivs = document.querySelectorAll('div');
 
-        const findFAQContainer = Array.from(saveDivs)
-            .find(item => item.innerText.trim().toLowerCase() === 'people also ask');
+            // Find the "AI Overview" title above the AI overview section.
+                // I could see this DOM element being removed if Google fully made the switch to AI centric search.
+            const findAIOverview = Array.from(saveDivs)
+                .find(item => item.innerText.trim().toLowerCase() === 'ai overview');
 
-        if (findAIOverview) {
+            const findFAQContainer = Array.from(saveDivs)
+                .find(item => item.innerText.trim().toLowerCase() === 'people also ask');
 
-            setAiResponse(findAIOverview.nextElementSibling);
-            setAiContainer(findAIOverview.parentElement);
+            // Remove the AI overview section if exists.
+            const h1 = Array.from(document.querySelectorAll('h1'))
+                .find(el => el.innerText.trim() === 'Search Results');
 
-            const theOverlay = getInnerContainer();
+            if (findAIOverview) {
 
-            const aiResponse = getAiResponse();
-            if (aiResponse) {
+                const aiResponse = findAIOverview.nextElementSibling
+                const aiContainer = findAIOverview.parentElement;
+
+                setAiResponse(aiResponse);
+                setAiContainer(aiContainer);
+
+                const theOverlay = getInnerContainer();
+
+                if (aiResponse) {
 
 
-            // Remove "AI responses..." footer for AI response section in overlay.
-                // Should use cloned nodes...but am having issues with the content 
-                // that is transfered, even with the subtree set to true.
-            /*
-                const getThis = Array.from(aiResponse.querySelectorAll('div'))
-                    .find(item => item.innerText.trim().toLowerCase() === 'ai responses may include mistakes. learn more');
+                // Remove "AI responses..." footer for AI response section in overlay.
+                    // Should use cloned nodes...but am having issues with the content 
+                    // that is transfered, even with the subtree set to true.
+                /*
+                    const getThis = Array.from(aiResponse.querySelectorAll('div'))
+                        .find(item => item.innerText.trim().toLowerCase() === 'ai responses may include mistakes. learn more');
 
-                if (getThis) {
-                    console.log(getThis);
-                    hide(getThis);
-                }
-            */
-                theOverlay.appendChild(aiResponse);
-            }
+                    if (getThis) {
+                        console.log(getThis);
+                        hide(getThis);
+                    }
+                */
+                    theOverlay.appendChild(aiResponse);
 
-            const aiContainer = getAiContainer();
-
-            // only open the overlay if we have found an ai chat?
-                // Could still get opened for just a FAQ result, but feels less useful as those are related answers.
-
-            if (aiContainer) {
-                theOverlay.appendChild(aiContainer);
-                document.body.appendChild(theOverlay);
-
-                if (findFAQContainer) {
-                    findFAQContainer.parentElement.style.width = '100%';
-                    setFAQContainer(findFAQContainer.parentElement);
-                    theOverlay.appendChild(getFAQContainer());
                 }
 
-                // Open the overlay with simulated click event.
-                openOverlay(new Event('click'));
+                // only open the overlay if we have found an ai chat?
+                    // Could still get opened for just a FAQ result, but feels less useful as those are related answers.
 
-                setInnerContainer(theOverlay);
+                if (aiContainer) {
+                    // theOverlay.appendChild(aiContainer);
 
-                const overlayContainer = getOverlayContainer();
+                    if (findFAQContainer) {
+                        findFAQContainer.parentElement.style.width = '100%';
+                        setFAQContainer(findFAQContainer.parentElement);
+                        theOverlay.appendChild(getFAQContainer());
+                    }
 
-                overlayContainer.appendChild(theOverlay);
+                    setInnerContainer(theOverlay);
 
-                setOverlayContainer(overlayContainer);
+                    const overlayContainer = getOverlayContainer();
 
-                document.body.appendChild(overlayContainer);
+                    overlayContainer.appendChild(getInnerContainer());
 
-                // add some media rules.
+                    setOverlayContainer(overlayContainer);
 
+                    document.body.appendChild(getOverlayContainer());
+
+                    if (getDisplayNavButtons()) {
+                        const closeButton = getCloseButton();
+                        show(closeButton, 'block');
+                        setCloseButton(closeButton);
+                    }
+
+                    openOverlay(new Event('click'));
+
+                    // Remove h1 here.
+                    if (h1 && h1.nextElementSibling?.nextElementSibling) {
+                        h1.nextElementSibling.nextElementSibling.remove();
+                    }
+
+                }
+
+                observer.disconnect();
             }
-
-            observer.disconnect();
         }
-    }
 
-    const observer = new MutationObserver(observerCallback);
-    const config = { attributes: true, childList: true, subtree: true };
-    observer.observe(document.body, config);
+        const observer = new MutationObserver(observerCallback);
+        const config = { attributes: true, childList: true, subtree: true };
+        observer.observe(document.body, config);
+    }
 
 })();

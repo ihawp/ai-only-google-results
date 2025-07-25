@@ -6,33 +6,39 @@
 	<body>
 
 		<header>
-			<nav>
-				<ul>
-					<li>
-						<a href="#">wow!</a>
-					</li>
-				</ul>
-			</nav>
 		</header>
 
 		<main>
 
 			<header>
-
+				Only AI Search Results.
+				<label title="Turn the plugin on / off: If the button is green, the plugin is on.">
+					<input type="checkbox" id="togglePlugin" data-title="showPlugin">
+					On
+				</label>
 			</header>
 
 			<section>
-				<label>
-					<input type="checkbox" id="toggleWebResults">
-					Show "See Web Results" Button
+				<label title="If checked, only AI results will be shown when AI results are available.">
+					<input type="checkbox" id="toggleWebResults" data-title="showWebResults" checked="true">
+					Show Web Results
 				</label>
-				<button id="webResultsButton">See Web Results</button>
+			</section>
+
+			<section>
+				<button id="resetSettings">Reset settings</button>
 			</section>
 
 		</main>
 
 		<footer>
-
+			<nav>
+				<ul>
+					<li>
+						<a href="https://www.ihawp.com" target="_blank" title="Warren Chemerika | ihawp.com">ihawp.com</a>
+					</li>
+				</ul>
+			</nav>
 		</footer>
 
 		<script src="main.js"></script>

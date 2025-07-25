@@ -1,16 +1,40 @@
+const defaultSettings = {
+    showWebResults: true,
+    showPlugin: true,
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-  const toggle = document.getElementById('toggleWebResults');
 
-  // Load stored setting
-  chrome.storage.local.get(['showWebResults'], (result) => {
-    const show = result.showWebResults ?? true;
-    toggle.checked = show;
-  });
+    const toggleWebResults = document.getElementById('toggleWebResults');
+    const togglePlugin = document.getElementById('togglePlugin');
+    const resetSettings = document.getElementById('resetSettings');
 
-  // Update setting on toggle change
-  toggle.addEventListener('change', () => {
-    const shouldShow = toggle.checked;
-    chrome.storage.local.set({ showWebResults: shouldShow });
-  });
-  
+    // Load stored setting.
+    chrome.storage.local.get(['showWebResults', 'showPlugin'], result => {
+        const showWebResults = result.showWebResults ?? true;
+        const showPlugin = result.showPlugin ?? true;
+
+        toggleWebResults.checked = showWebResults;
+        togglePlugin.checked = showPlugin;
+    });
+
+    const toggleChange = event => {
+        const bool = event.currentTarget.checked;
+        const title = event.currentTarget.dataset.title;
+        chrome.storage.local.set({ [title]: bool });
+    }
+
+    const resetUserSettings = () => {
+        toggleWebResults.checked = true;
+        togglePlugin.checked = true;
+        chrome.storage.local.set(defaultSettings);
+    }
+
+    resetSettings.addEventListener('click', resetUserSettings);
+
+    // Update setting on toggle change.
+    toggleWebResults.addEventListener('change', toggleChange);
+    togglePlugin.addEventListener('change', toggleChange);
+
+
 });

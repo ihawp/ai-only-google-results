@@ -1,14 +1,17 @@
 # AI Only Google
 
-```
-TODO:
-- Remove the AI section from the "Web Results" page.
-- Ensure that the fixed content (overlay) is the proper height (based on the scroll height of the document. Or set the scroll height to 0 when the overlay is opened).
-```
-
 ## Project Goal
 
 Explore the future possibilities of search and possible implementations of user flows that could be a part of our daily lives very soon.
+
+I feel stupid building this, but I am slightly convinced that this is the clear direction that search on the internet is headed for.
+
+With optomized caching for lifes most common questions I don't understand why Google couldn't easily implement an entirely AI structure for it's search feature in first-world countries within the coming years.
+
+## TODO
+- Remove the AI section from the "Web Results" page.
+- Add custom loading animations.
+- Set a name (or use Google API console to allow for OAuth login with Google account)?
 
 ## Initial Thoughts
 
