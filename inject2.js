@@ -1,7 +1,6 @@
 (() => {
 
     const tracker = {
-        findAIOverview: undefined,
         aiResponse: undefined,
         aiContainer: undefined,
         faqContainer: undefined,
@@ -10,7 +9,6 @@
     }
 
     // Setters
-    const setFindAIOverview = value => tracker.findAIOverview = value;
     const setAiResponse = value => tracker.aiResponse = value;
     const setAiContainer = value => tracker.aiContainer = value;
     const setFAQContainer = value => tracker.faqContainer = value;
@@ -18,7 +16,6 @@
     const setOverlayOpen = value => tracker.overlayOpen = value;
 
     // Getters
-    const getFindAIOverview = () => tracker.findAIOverview;
     const getAiResponse = () => tracker.aiResponse;
     const getAiContainer = () => tracker.aiContainer;
     const getFAQContainer = () => tracker.faqContainer;
@@ -35,11 +32,25 @@
         item.style.visibility = 'visible';
     }
 
+    const openBody = event => {
+        document.body.style.overflow = 'hidden';
+        document.body.style.display = 'flex';
+        document.body.style.flexDirection = 'column';
+        document.body.style.alignItems = 'center';
+    }
+
+    const closeBody = event => {
+        document.body.style.overflow = 'scroll';
+        document.body.style.display = 'inherit';
+        document.body.style.flexDirection = 'unset';
+        document.body.style.alignItems = 'unset';
+    }
+
     const openOverlay = event => {
         event.preventDefault();
         if (getOverlayOpen()) return;
         const overlay = getOverlayContainer();
-        document.body.style.overflow = 'hidden';
+        openBody();
         show(overlay, 'flex');
         setOverlayContainer(overlay);
         setOverlayOpen(true);
@@ -49,7 +60,7 @@
         event.preventDefault();
         if (!getOverlayOpen()) return;
         const overlay = getOverlayContainer();
-        document.body.style.overflow = 'auto';
+        closeBody();
         hide(overlay);
         setOverlayContainer(overlay);
         setOverlayOpen(false);
@@ -115,38 +126,49 @@
             .find(item => item.innerText.trim().toLowerCase() === 'people also ask');
 
         if (findAIOverview) {
-            console.log('coming');
 
-            setFindAIOverview(findAIOverview);
             setAiResponse(findAIOverview.nextElementSibling);
             setAiContainer(findAIOverview.parentElement);
 
             const theOverlay = getOverlayContainer();
 
-            const foundAIOverview = getFindAIOverview();
-            if (foundAIOverview) {
-                theOverlay.appendChild(foundAIOverview);
-            }
-
             const aiResponse = getAiResponse();
             if (aiResponse) {
+
+
+                // Remove "AI responses..." footer for AI response section in overlay.
+                    // Should use cloned nodes...but am having issues with the content 
+                    // that is transfered, even with the subtree set to true.
+                    /*
+                const getThis = Array.from(aiResponse.querySelectorAll('div'))
+                    .find(item => item.innerText.trim().toLowerCase() === 'ai responses may include mistakes. learn more');
+
+                if (getThis) {
+                    console.log(getThis);
+                    hide(getThis);
+                }
+*/
                 theOverlay.appendChild(aiResponse);
             }
 
             const aiContainer = getAiContainer();
+
+            // only open the overlay if we have found an ai chat?
+                // Could still get opened for FAQ, but feels less useful as those are related answers.
+
             if (aiContainer) {
                 theOverlay.appendChild(aiContainer);
-            }
+                document.body.appendChild(theOverlay);
 
-            setOverlayContainer(theOverlay);
+                if (findFAQContainer) {
+                    setFAQContainer(findFAQContainer.parentElement);
+                    theOverlay.appendChild(getFAQContainer());
+                }
 
-            document.body.appendChild(theOverlay);
-            openOverlay(new Event('click'));
+                openOverlay(new Event('click'));
 
-            if (findFAQContainer) {
-                setFAQContainer(findFAQContainer.parentElement);
-                theOverlay.appendChild(getFAQContainer());
                 setOverlayContainer(theOverlay);
+                document.body.appendChild(theOverlay);
             }
 
             observer.disconnect();
