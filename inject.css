@@ -7,6 +7,10 @@
     visibility: hidden !important;
 }
 
+#searchform {
+    z-index: 99999;
+}
+
 @media (min-width: 68em) {
     #loaded-inner {
         width: 1080px;

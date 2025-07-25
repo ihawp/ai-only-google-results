@@ -1,5 +1,17 @@
 # AI Only Google
 
+```
+TODO:
+- Remove the AI section from the "Web Results" page.
+- Ensure that the fixed content (overlay) is the proper height (based on the scroll height of the document. Or set the scroll height to 0 when the overlay is opened).
+```
+
+## Project Goal
+
+Explore the future possibilities of search and possible implementations of user flows that could be a part of our daily lives very soon.
+
+## Initial Thoughts
+
 This past weekend I spent a lot of time thinking about the future of people and how they will want to interact and use technology. Websites are great, but they are inconsistent in layout and are sometimes slow and dysfunctional.
 
 One persons Grandma said that she "does not want to see links anymore!!!" (on Google). And hey fair enough, there are a lot of them and they can be quite overwhelming. SO I thought (unless this already exists) why not enable this sort of functionality for this persons Grandmother by building a Chrome Extension that focuses on the AI/quick-answer portions of the results page.
@@ -20,6 +32,4 @@ Does Google have any legal blockages in this regard...can they not just remove t
 
 As I thought, they do not! Google could just fundamentally change their business model. If no one is clicking the links then why show them! Make people pay for a customized AI experience that can lead to some links...but in the nice sidebar popup tab way they are doing now, not hyperlinks.
 
-## TODO:
-
-- Remove the AI section from the "Web Results" page.
+At this point I must have stopped typing in this document and began typing in the JavaScript files...!

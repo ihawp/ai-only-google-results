@@ -7,6 +7,7 @@
         faqContainer: undefined,
         overlayContainer: undefined,
         overlayOpen: false,
+        lastScrollTop: 0,
     }
 
     // Setters
@@ -18,6 +19,7 @@
     const setInnerContainer = value => tracker.innerContainer = value;
     const setOpenButton = value => tracker.openButton = value;
     const setCloseButton = value => tracker.closeButton = value;
+    const setLastScrollTop = value => tracker.lastScrollTop = value;
 
     // Getters
     const getAiResponse = () => tracker.aiResponse;
@@ -28,6 +30,7 @@
     const getInnerContainer = () => tracker.innerContainer;
     const getOpenButton = () => tracker.openButton;
     const getCloseButton = () => tracker.closeButton;
+    const getLastScrollTop = () => tracker.lastScrollTop;
 
     const hide = item => {
         item.style.display = 'none';
@@ -44,6 +47,11 @@
         if (getOverlayOpen()) return;
         const overlay = getOverlayContainer();
         document.body.style.overflow = 'hidden';
+
+        const { scrollTop } = document.documentElement;
+        setLastScrollTop(scrollTop);
+        document.documentElement.scrollTop = 0;
+
         show(overlay, 'flex');
         setOverlayContainer(overlay);
         setOverlayOpen(true);
@@ -62,6 +70,11 @@
         hide(overlay);
         setOverlayContainer(overlay);
         setOverlayOpen(false);
+
+        const scrollTop = getLastScrollTop();
+        if (scrollTop != document.documentElement.scrollTop) {
+            document.documentElement.scrollTop = scrollTop;
+        }
 
         displayOverlayButton(false);
     }

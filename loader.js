@@ -11,7 +11,7 @@
         overlay.style.left = '0';
         overlay.style.width = '100vw';
         overlay.style.height = '100vh';
-        overlay.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+        overlay.style.backgroundColor = 'var(--background-color)';
         overlay.style.display = 'flex';
         overlay.style.alignItems = 'center';
         overlay.style.justifyContent = 'center';
