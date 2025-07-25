@@ -104,7 +104,7 @@
         button.style.outline = '1px solid white';
         button.style.fontWeight = '700';
         button.style.borderRadius = '100px';
-        button.style.top = '1rem';
+        button.style.bottom = '1rem';
         button.style.right = '1rem';
         button.style.padding = '1rem 3rem';
         button.style.cursor = 'pointer';
@@ -116,8 +116,6 @@
 
     function generateOpenButton() {
         const button = generateButton('Open AI Overview');
-        button.style.top = 'unset';
-        button.style.bottom = '1rem';
         button.addEventListener('click', openOverlay);
         return button;
     }
@@ -224,6 +222,8 @@
 
             const aiContainer = getAiContainer();
 
+            console.log({ aiContainer });
+
             // only open the overlay if we have found an ai chat?
                 // Could still get opened for just a FAQ result, but feels less useful as those are related answers.
 
@@ -261,6 +261,19 @@
     insertMediaQueries();
 
     setOverlayContainer(generateOverlay());
+
+    chrome.storage.local.get(['showWebResults'], (result) => {
+        const shouldShow = result.showWebResults ?? true;
+
+        const openButton = getOpenButton();
+        const closeButton = getCloseButton();
+
+        if (!shouldShow) {
+            openButton.classList.add('hide-forever');
+            closeButton.classList.add('hide-forever');
+        }
+
+    });
 
     const observer = new MutationObserver(observerCallback);
     const config = { attributes: true, childList: true, subtree: true };

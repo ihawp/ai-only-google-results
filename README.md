@@ -19,3 +19,7 @@ If I did add custom Ollama to the plugin (locally) then I could have it intake t
 Does Google have any legal blockages in this regard...can they not just remove the search feature as it's been for 'hundreds of years' because they will get in legal trouble with a government or governments? Who knows...probably a Google AI Overview.
 
 As I thought, they do not! Google could just fundamentally change their business model. If no one is clicking the links then why show them! Make people pay for a customized AI experience that can lead to some links...but in the nice sidebar popup tab way they are doing now, not hyperlinks.
+
+## TODO:
+
+- Remove the AI section from the "Web Results" page.

@@ -1,3 +1,15 @@
 .light, .light > body {
     background-color: var(--background-color) !important;
 }
+
+.hide-forever {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+@media (min-width: 68em) {
+    #loaded-inner {
+        width: 1080px;
+        max-width: 1080px;
+    }
+}
