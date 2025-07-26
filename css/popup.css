@@ -14,12 +14,31 @@ body {
     height: max-content;
     background-color: #222;
     color: #fff;
-
+    font-size: 1rem;
 }
 
 body > header {
-  height: 15px;
-  background-color: #444;
+  user-select: none;
+  background-color: #fff;
+  padding: 1rem;
+  max-height: 96px;
+  overflow: hidden;
+  position: relative;
+}
+
+.header-cursor {
+  position: absolute;
+  bottom: 15px;
+  right: 25%;
+
+  width: 50px;
+  height: 50px;
+}
+
+h1 {
+  color: #5E33A7;
+  text-decoration: underline;
+  font-size: 1.5rem;
 }
 
 main > header {
@@ -54,21 +73,17 @@ button {
   cursor: pointer;
   background: transparent;
 
-  border: 1px solid;
+  border: 1px solid transparent;
   color: white;
   border-radius: 100px;
 }
 
-button:focus {
+button:active {
   outline: 1px solid white;
 }
 
-#resetSettings {
-  font-weight: 600;
-}
-
-#reloadPage {
-  border: none;
+button:hover {
+  border-color: white;
 }
 
 .flex {
@@ -142,6 +157,7 @@ summary::-webkit-details-marker {
 
 #settings-details[open] summary::before {
   content: "Close Settings";
+  font-weight: 600;
 }
 
 a {
@@ -194,7 +210,6 @@ details::before, details::after {
 #plugin-status {
   position: relative;
   --indicator-color: green;
-
   margin-left: 1rem;
 }
 
