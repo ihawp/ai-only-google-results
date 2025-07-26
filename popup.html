@@ -3,20 +3,18 @@
 	<head>
 		<link rel="stylesheet" href="./css/popup.css">
 	</head>
-	<body>
+	<body class="flex flex-col items-center justify-end">
 
 		<header>
 		</header>
 
-		<main>
+		<main class="flex flex-col items-center justify-end">
 
-			<header>
-				Only AI Search Results.
-				<label title="Turn the plugin on / off: If the button is green, the plugin is on." class="custom-checkbox">
+			<header class="flex flex-col items-center text-center">
+				<strong class="w-full">Only AI Search Results.</strong>
+				<label title="Turn the plugin on / off: If the button is red, the plugin is on." class="custom-checkbox flex flex-col items-center">
 					<input type="checkbox" id="togglePlugin" data-title="showPlugin">
-					<div class="checkmark">
-						content
-					</div>
+					<div class="checkmark"></div>
 				</label>
 			</header>
 
@@ -29,20 +27,19 @@
 
 			</section>
 
-			<section>
-				<button id="resetSettings">Reset settings</button>
+			<section class="flex flex-row justify-center">
+				<button id="resetSettings" class="reset">Reset settings</button>
 				<button id="reloadPage">Reload Page</button>
 			</section>
 
 		</main>
 
 		<footer>
-			<nav>
-				<ul>
-					<li>
-						<a href="https://www.ihawp.com" target="_blank" title="Warren Chemerika | ihawp.com">ihawp.com</a>
-					</li>
-				</ul>
+			<nav aria-label="Footer Navigation">
+				<a href="https://www.ihawp.com" target="_blank" title="Warren Chemerika | ihawp.com">
+					<svg width="20" height="20" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_24_301)"><rect x="0.918367" y="0.918367" width="43.1633" height="43.1633" rx="6.42857" fill="#FF69B4" stroke="#1E1E1E" stroke-width="1.83673"></rect><path d="M12.0535 38.0253H6.42847V16.0087H12.0535V38.0253Z" fill="#FFFFF0"></path><path d="M23.8308 6.42859H18.2498V38.0253H23.8308V24.7977C23.8308 21.2382 32.0925 20.2714 32.0925 24.7977V38.0253H38.0251V24.7977C37.7262 21.4447 37.1996 20.0522 35.7839 18.2059C31.9459 15.0825 27.6968 15.0665 23.8308 18.2059V6.42859Z" fill="#FFFFF0"></path><path d="M12.0535 38.0253H6.42847V16.0087H12.0535V38.0253Z" stroke="#1E1E1E" stroke-width="1.83673"></path><path d="M23.8308 6.42859H18.2498V38.0253H23.8308V24.7977C23.8308 21.2382 32.0925 20.2714 32.0925 24.7977V38.0253H38.0251V24.7977C37.7262 21.4447 37.1996 20.0522 35.7839 18.2059C31.9459 15.0825 27.6968 15.0665 23.8308 18.2059V6.42859Z" stroke="#1E1E1E" stroke-width="1.83673"></path><path d="M9.37109 7.64532C10.8516 7.64532 12.0127 8.81039 12.0127 10.199C12.0127 11.5877 10.8516 12.7527 9.37109 12.7527C7.89062 12.7527 6.72949 11.5877 6.72949 10.199C6.72949 8.81039 7.89062 7.64532 9.37109 7.64532Z" fill="#FFFFF0" stroke="#1E1E1E" stroke-width="1.83673"></path></g><defs><clipPath id="clip0_24_301"><rect width="45" height="45" fill="white"></rect></clipPath></defs></svg>
+					<span>ihawp.com</span>
+				</a>
 			</nav>
 		</footer>
 

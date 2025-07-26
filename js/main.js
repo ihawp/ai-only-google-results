@@ -12,8 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Load stored setting.
     chrome.storage.local.get(['showWebResults', 'showPlugin'], result => {
-        const showWebResults = result.showWebResults ?? true;
-        const showPlugin = result.showPlugin ?? true;
+        const showWebResults = result.showWebResults ?? false;
+        const showPlugin = result.showPlugin ?? false;
 
         toggleWebResults.checked = showWebResults;
         togglePlugin.checked = showPlugin;

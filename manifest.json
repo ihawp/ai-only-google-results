@@ -1,6 +1,6 @@
 {
-  "name": "AI Only Google Search",
-  "description": "Only see AI and FAQ results when searching on Google.",
+  "name": "AIF Google Search Results",
+  "description": "AI-First search results for Google search results. Not a fan of hyperlinks? This plugin will only display the AI and FAQ results when searching on Google (when an AI Overview is available).",
   "version": "1.0",
   "manifest_version": 3,
   "action": {

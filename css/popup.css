@@ -12,13 +12,88 @@ html {
 body {
     width: 300px;
     height: 400px;
-    background-color: limegreen;
+    background-color: #222;
+    color: #fff;
+
 }
 
-body > header, footer {
-    height: 25px;
-    max-height: 25px;
-    background-color: #222;
+body > header {
+  height: 15px;
+  background-color: #444;
+}
+
+footer nav a {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: min-content;
+  height: min-content;
+  margin: 0 0 1rem 1rem;
+  font-size: .9rem;
+  text-decoration: none;
+  opacity: .5;
+  transition: all .2s ease;
+}
+
+footer nav a:hover {
+  opacity: 1;
+}
+
+footer nav a {
+  gap: .5rem;
+}
+
+button {
+  width: 47%;
+  padding: .5rem .75rem;
+  cursor: pointer;
+  background: transparent;
+
+  border: 1px solid white;
+  color: white;
+  border-radius: 100px;
+}
+
+button:focus {
+  outline: 1px solid white;
+}
+
+#resetSettings {
+  background-color: red;
+}
+
+#reloadPage {
+  border: none;
+}
+
+.flex {
+  display: flex;
+  gap: .5rem;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-end {
+  justify-content: end;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.w-full {
+  width: 100%;
 }
 
 main {
@@ -29,9 +104,18 @@ ul {
     list-style: none;
 }
 
+a {
+    color: white;
+}
+
 /* Hide the default checkbox */
 .custom-checkbox input[type="checkbox"] {
     display: none;
+}
+
+
+.custom-checkbox {
+  width: min-content;
 }
 
 /* Create custom checkbox box */
@@ -49,7 +133,7 @@ ul {
     cursor: pointer;
 }
 
-.custom-checkmark input[type="checkout"]:checked {
+.custom-checkmark input[type="checkout"]:checked + .checkmark {
     background-color: limegreen;
     border-color: white;
 }
@@ -60,7 +144,7 @@ ul {
     position: absolute;
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -50%), rotate(45deg);
+    transform: translate(-50%, -50%);
     width: 40px;
     height: 80px;
     border: solid #fff;
