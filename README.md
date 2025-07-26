@@ -6,7 +6,6 @@ Explore the future possibilities of search and possible implementations of user 
 
 ## TODO
 - Implement settings for showing "AI Overview" / FAQ individually.
-- Get files (js, images, videos) ready for initial deployment.
 
 ### Ideas:
 ```
