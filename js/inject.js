@@ -59,23 +59,28 @@
 
     const openOverlay = event => {
         event.preventDefault();
+        
         if (getOverlayOpen()) return;
-        const overlay = getOverlayContainer();
 
+        const overlay = getOverlayContainer();
         show(overlay, 'flex');
         setOverlayContainer(overlay);
         setOverlayOpen(true);
-
         displayOverlayButton(true);
 
         document.body.style.overflow = 'scroll';
-
         const scrollTop = document.documentElement.scrollTop;
         setLastScrollTop(scrollTop);
-
         window.scrollTo(0, 0);
-
         document.body.style.overflow = 'hidden';
+
+        const focusableSelectors = 'a[href], button, textarea, input, select, [tabindex]:not([tabindex="-1"])';
+        const focusables = Array.from(overlay.querySelectorAll(focusableSelectors)).filter(el => !el.disabled && el.offsetParent !== null);
+        if (focusables.length > 0) {
+            focusables[0].focus();
+        } else {
+            overlay.focus(); // Fallback
+        }
     }
 
     const closeOverlay = event => {
@@ -101,7 +106,6 @@
         const button = document.createElement('button');
         button.style.position = 'fixed';
         button.style.border = '1px solid white';
-        button.style.outline = '1px solid white';
         button.style.fontWeight = '700';
         button.style.borderRadius = '100px';
         button.style.bottom = '1rem';
@@ -110,8 +114,8 @@
         button.style.cursor = 'pointer';
         button.style.zIndex = 126;
         button.innerText = innerText;
-        button.setAttribute('tabindex', '-1');
-        button.classList.add('light');
+        button.setAttribute('tabindex', '0');
+        button.classList.add('light', 'focus-outline');
         return button;
     }
 
@@ -160,30 +164,55 @@
 
     }
 
-    function trapFocus(container) {
+    const globalFocusTrap = e => {
+        if (e.key !== 'Tab') return;
+
+        const isOpen = getOverlayOpen();
+        if (!isOpen) return; // Let tab flow freely when overlay is closed
+
+        const overlay = getOverlayContainer();
+        const outsideButton = getCloseButton();
+
         const focusableSelectors = 'a[href], button, textarea, input, select, [tabindex]:not([tabindex="-1"])';
-        const focusables = container.querySelectorAll(focusableSelectors);
+        const overlayElements = Array.from(overlay.querySelectorAll(focusableSelectors)).filter(el => !el.disabled && el.offsetParent !== null);
 
-        if (focusables.length === 0) return;
+        if (overlayElements.length === 0) return;
 
-        const first = focusables[0];
-        const last = focusables[focusables.length - 1];
+        const first = overlayElements[0];
+        const last = overlayElements[overlayElements.length - 1];
 
-        container.addEventListener('keydown', function (e) {
-            if (e.key !== 'Tab') return;
+        const active = document.activeElement;
 
-            if (e.shiftKey) {
-                if (document.activeElement === first) {
-                    e.preventDefault();
-                    last.focus();
-                }
-            } else {
-                if (document.activeElement === last) {
-                    e.preventDefault();
+        // Cycle logic
+        if (!e.shiftKey) {
+            if (active === last) {
+                e.preventDefault();
+                if (outsideButton) {
+                    outsideButton.focus();
+                } else {
                     first.focus();
                 }
+            } else if (active === outsideButton) {
+                e.preventDefault();
+                first.focus();
             }
-        });
+        } else {
+            if (active === first) {
+                e.preventDefault();
+                if (outsideButton) {
+                    outsideButton.focus();
+                } else {
+                    last.focus();
+                }
+            } else if (active === outsideButton) {
+                e.preventDefault();
+                last.focus();
+            }
+        }
+    }
+
+    function initGlobalFocusTrap() {
+        document.body.addEventListener('keydown', globalFocusTrap);
     }
 
     async function generateOverlay() {
@@ -229,11 +258,11 @@
             setOpenButton(openButton);
             setCloseButton(closeButton);
 
-            document.body.appendChild(openButton);
-            document.body.appendChild(closeButton);
+            document.body.insertAdjacentElement('afterbegin', openButton);
+            document.body.insertAdjacentElement('afterbegin', closeButton);
         }
 
-        overlay.appendChild(innerContainer);
+        overlay.insertAdjacentElement('afterbegin', innerContainer);
 
         return overlay;
     }
@@ -283,7 +312,7 @@
                         }
                     */
                     aiResponse.style.zIndex = 130;
-                    theOverlay.appendChild(aiResponse);
+                    theOverlay.insertAdjacentElement('afterbegin', aiResponse);
 
                 }
 
@@ -297,7 +326,7 @@
                         findFAQContainer.parentElement.parentElement.parentElement.style.width = '100%';
                         findFAQContainer.parentElement.parentElement.parentElement.style.zIndex = 128;
                         setFAQContainer(findFAQContainer.parentElement.parentElement.parentElement);
-                        theOverlay.appendChild(getFAQContainer());
+                        theOverlay.insertAdjacentElement('beforeend', getFAQContainer());
                     }
 
                     setInnerContainer(theOverlay);
@@ -318,9 +347,9 @@
 
                     openOverlay(new Event('click'));
 
-                    overlayContainer.focus();
-                    trapFocus(overlayContainer);
+                    initGlobalFocusTrap();
 
+                    overlayContainer.focus();
                     // Remove h1 here.
                     if (h1 && h1.nextElementSibling?.nextElementSibling) {
                         h1.nextElementSibling.nextElementSibling.remove();

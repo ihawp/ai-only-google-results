@@ -6,6 +6,10 @@
     z-index: 99999;
 }
 
+.focus-outline:focus {
+    outline: 2px solid hotpink;
+}
+
 /* really bad piece of code */
 /* will break eventually */
 /* there is div covering the images in faq popup */
