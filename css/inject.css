@@ -6,9 +6,30 @@
     z-index: 99999;
 }
 
+/* really bad piece of code */
+/* will break eventually */
+/* there is div covering the images in faq popup */
+.mckXgb {
+    display: none;
+}
+
+#loaded {
+    overflow: hidden;
+    width: 100%;
+}
+
+#loaded-inner {
+    width: 100%;
+    max-width: 100%;
+}
+
 @media (min-width: 68em) {
     #loaded-inner {
         width: 1080px;
         max-width: 1080px;
+    }
+    #loaded {
+        width: 1080px;
+        overflow: scroll;
     }
 }

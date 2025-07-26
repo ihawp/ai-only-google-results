@@ -62,6 +62,12 @@
         if (getOverlayOpen()) return;
         const overlay = getOverlayContainer();
 
+        show(overlay, 'flex');
+        setOverlayContainer(overlay);
+        setOverlayOpen(true);
+
+        displayOverlayButton(true);
+
         document.body.style.overflow = 'scroll';
 
         const scrollTop = document.documentElement.scrollTop;
@@ -71,12 +77,6 @@
         window.scrollTo(0, 0);
 
         document.body.style.overflow = 'hidden';
-
-        show(overlay, 'flex');
-        setOverlayContainer(overlay);
-        setOverlayOpen(true);
-
-        displayOverlayButton(true);
     }
 
     const closeOverlay = event => {
@@ -180,7 +180,7 @@
         overlay.style.position = 'fixed';
         overlay.style.top = '134px';
         overlay.style.left = 0;
-        overlay.style.width = '100vw';
+        overlay.style.width = '100%';
         overlay.style.height = 'calc(100vh - 134px)';
         overlay.style.display = 'flex';
         overlay.style.flexDirection = 'column';
@@ -268,7 +268,7 @@
 
                     if (findFAQContainer) {
                         findFAQContainer.parentElement.parentElement.parentElement.style.width = '100%';
-                        findFAQContainer.parentElement.parentElement.parentElement.style.zIndex = 129;
+                        findFAQContainer.parentElement.parentElement.parentElement.style.zIndex = 128;
                         setFAQContainer(findFAQContainer.parentElement.parentElement.parentElement);
                         theOverlay.appendChild(getFAQContainer());
                     }
@@ -288,8 +288,6 @@
                         show(closeButton, 'block');
                         setCloseButton(closeButton);
                     }
-
-
 
                     openOverlay(new Event('click'));
 
