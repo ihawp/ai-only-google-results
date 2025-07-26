@@ -5,16 +5,16 @@
 Explore the future possibilities of search and possible implementations of user flows that could be a part of our daily lives in the coming future.
 
 ## TODO
+- Implement settings for showing "AI Overview" / FAQ individually.
 
-Worrysome:
-- Checkbox for power on/off is not focusable.
-
-General:
+### Ideas:
+```
 - Add custom loading animations.
 - Set a name (or use Google API console to allow for OAuth login with Google account)?
 - Sometimes AI overview will not properly transfer to the overlay, this happens when the page is reloaded numerous times.
 - HARD(er): Only display the popup loader on the search results page (not images, short videos, etc).
     - Use the navigation bar, maybe there are active classes on the highlighted current page...yes you can use div[selected], but the navbar that contains that selected div with the innerText of "All" only loads late (at the same time as the "AI Overview").
+```
 
 ## Initial Thoughts
 

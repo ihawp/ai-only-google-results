@@ -68,8 +68,10 @@
 
         if (document.body) {
 
-            const selectedDiv = document.querySelectorAll('div[selected]');
-            console.log(selectedDiv);
+            /*
+                const selectedDiv = document.querySelectorAll('div[selected]');
+                console.log(selectedDiv);
+            */
 
             const computedStyle = window.getComputedStyle(document.body);
             const computedBg = computedStyle.backgroundColor;
@@ -121,10 +123,10 @@
         }
     }
 
-    // Start inserting loader early
+    // Start inserting loader early.
     waitForBodyAndInsert();
 
-    // Observer for "AI Overview"
+    // Observer for div with "AI Overview" as innerText.
     const observer = new MutationObserver((mutationList, obs) => {
         const divs = document.querySelectorAll('div');
         const found = Array.from(divs).find(d => d.innerText.trim().toLowerCase() === 'ai overview');
@@ -137,14 +139,14 @@
 
     observer.observe(document.documentElement, { childList: true, subtree: true });
 
-    // Remove loader on DOMContentLoaded if "AI Overview" is not found
+    // Remove loader on DOMContentLoaded if "AI Overview" is not found.
     function checkAndRemoveIfNotFound() {
         const divs = document.querySelectorAll('div');
         const found = Array.from(divs).some(d => d.innerText.trim().toLowerCase() === 'ai overview');
 
         if (!found) {
             removeLoader();
-            observer.disconnect(); // Optional: stop observing if "AI Overview" is definitely not coming
+            observer.disconnect();
         }
     }
 
