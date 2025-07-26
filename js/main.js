@@ -12,35 +12,37 @@ document.addEventListener('DOMContentLoaded', () => {
     const pluginStatus = document.getElementById('plugin-status');
 
     // Load stored setting.
-    chrome.storage.local.get(['showWebResults', 'showPlugin'], result => {
-        const showWebResults = result.showWebResults ?? false;
-        const showPlugin = result.showPlugin ?? false;
+    chrome.storage.local.get(['showWebResults', 'showPlugin'], (result) => {
+        const showWebResults = result.showWebResults ?? defaultSettings.showWebResults;
+        const showPlugin = result.showPlugin ?? defaultSettings.showPlugin;
 
-        toggleWebResults.checked = showWebResults;
-        togglePlugin.checked = showPlugin;
+        if (toggleWebResults) toggleWebResults.checked = showWebResults;
+        if (togglePlugin) togglePlugin.checked = showPlugin;
 
-        updatePluginStatus(getPluginStatusData(showPlugin));
+        if (pluginStatus) updatePluginStatus(getPluginStatusData(showPlugin));
     });
 
-    const toggleChange = event => {
+    const toggleChange = (event) => {
+        if (!event) return; // safeguard
         const bool = event.currentTarget.checked;
         const title = event.currentTarget.dataset.title;
+        if (!title) return;
+
         chrome.storage.local.set({ [title]: bool });
 
-        if (title === 'showPlugin') {
+        if (title === 'showPlugin' && pluginStatus) {
             updatePluginStatus(getPluginStatusData(bool));
         }
-
     }
 
     const resetUserSettings = () => {
-        toggleWebResults.checked = true;
-        togglePlugin.checked = true;
+        if (toggleWebResults) toggleWebResults.checked = true;
+        if (togglePlugin) togglePlugin.checked = true;
         chrome.storage.local.set(defaultSettings);
-        updatePluginStatus(getPluginStatusData(true));
+        if (pluginStatus) updatePluginStatus(getPluginStatusData(true));
     }
 
-    const getPluginStatusData = bool => bool ? {
+    const getPluginStatusData = (bool) => bool ? {
         text: 'On',
         color: 'limegreen',
     } : {
@@ -48,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
         color: 'red'
     }
 
-    const updatePluginStatus = data => {
+    const updatePluginStatus = (data) => {
         pluginStatus.innerText = data.text;
         pluginStatus.style.setProperty('--indicator-color', data.color);
     }
@@ -59,13 +61,24 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    resetSettings.addEventListener('click', resetUserSettings);
+    const settingKeydownEvent = event => {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            event.currentTarget.checked = !event.currentTarget.checked;
+            toggleChange({ currentTarget: event.currentTarget });
+        }
+    }
 
-    reloadPage.addEventListener('click', reloadThePage);
+    if (resetSettings) resetSettings.addEventListener('click', resetUserSettings);
+    if (reloadPage) reloadPage.addEventListener('click', reloadThePage);
 
-    // Update setting on toggle change.
-    toggleWebResults.addEventListener('change', toggleChange);
-    togglePlugin.addEventListener('change', toggleChange);
+    if (toggleWebResults) {
+        toggleWebResults.addEventListener('change', toggleChange);
+        toggleWebResults.addEventListener('keydown', settingKeydownEvent);
+    }
 
-
+    if (togglePlugin) {
+        togglePlugin.addEventListener('change', toggleChange);
+        togglePlugin.addEventListener('keydown', settingKeydownEvent);
+    }
 });

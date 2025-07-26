@@ -65,8 +65,11 @@
         const overlay = getOverlay();
 
         let backgroundColor = '#ffffff';
-        
+
         if (document.body) {
+
+            const selectedDiv = document.querySelectorAll('div[selected]');
+            console.log(selectedDiv);
 
             const computedStyle = window.getComputedStyle(document.body);
             const computedBg = computedStyle.backgroundColor;

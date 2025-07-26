@@ -1,6 +1,6 @@
 {
   "name": "AIF Google Search Results",
-  "description": "AI-First search results for Google search results. Not a fan of hyperlinks? This plugin will only display the AI and FAQ results when searching on Google (when an AI Overview is available).",
+  "description": "Not a fan of hyperlinks? View AI and FAQ results first when searching on Google.",
   "version": "1.0",
   "manifest_version": 3,
   "action": {
@@ -9,13 +9,43 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://www.google.com/search*", "*://www.google.ca/search*", "*://google.com/search*", "*://google.ca/search*"],
+      "matches": [
+        "*://www.google.com/search*",
+        "*://www.google.ca/search*",
+        "*://www.google.co.uk/search*",
+        "*://www.google.com.au/search*",
+        "*://www.google.co.in/search*",
+        "*://www.google.de/search*",
+        "*://www.google.fr/search*",
+        "*://www.google.it/search*",
+        "*://www.google.es/search*",
+        "*://www.google.nl/search*",
+        "*://www.google.com.br/search*",
+        "*://www.google.co.jp/search*",
+        "*://www.google.com.sg/search*",
+        "*://www.google.co.kr/search*"
+      ],
       "js": ["./js/loader.js"],
       "css": ["./css/loader.css"],
       "run_at": "document_start"
     },
     {
-      "matches": ["*://www.google.com/search*", "*://www.google.ca/search*", "*://google.com/search*", "*://google.ca/search*"],
+      "matches": [
+        "*://www.google.com/search*",
+        "*://www.google.ca/search*",
+        "*://www.google.co.uk/search*",
+        "*://www.google.com.au/search*",
+        "*://www.google.co.in/search*",
+        "*://www.google.de/search*",
+        "*://www.google.fr/search*",
+        "*://www.google.it/search*",
+        "*://www.google.es/search*",
+        "*://www.google.nl/search*",
+        "*://www.google.com.br/search*",
+        "*://www.google.co.jp/search*",
+        "*://www.google.com.sg/search*",
+        "*://www.google.co.kr/search*"
+      ],
       "js": ["./js/inject.js"],
       "css": ["./css/inject.css"],
       "run_at": "document_end"

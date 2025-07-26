@@ -64,12 +64,7 @@
 
         document.body.style.overflow = 'scroll';
 
-        const scrollTop = document.documentElement.scrollTop;
-        console.log(scrollTop);
-        setLastScrollTop(scrollTop);
-        document.documentElement.scrollTop = 0;
-        window.scrollTo(0, 0);
-
+        scrollIfOverlayOpen();
         document.body.style.overflow = 'hidden';
 
         show(overlay, 'flex');
@@ -212,15 +207,16 @@
         return overlay;
     }
 
-    window.addEventListener('scroll', () => {
+    const scrollIfOverlayOpen = () => {
         if (getOverlayOpen()) {
             const scrollTop = document.documentElement.scrollTop;
-            console.log(scrollTop);
             setLastScrollTop(scrollTop);
             document.documentElement.scrollTop = 0;
             window.scrollTo(0, 0);
         }
-    }, { passive: true });
+    }
+
+    window.addEventListener('scroll', scrollIfOverlayOpen, { passive: true });
 
     document.body.style.overflow = 'scroll';
     document.documentElement.scrollTop = 0;
