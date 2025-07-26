@@ -186,8 +186,7 @@
         overlay.style.flexDirection = 'column';
         overlay.style.alignItems = 'center';
         overlay.style.zIndex = 125;
-        overlay.style.overflowX = 'hidden';
-        overlay.style.overflowY = 'scroll';
+        overlay.style.overflow = 'scroll';
         overlay.classList.add('light');
 
         const innerContainer = generateInnerContainer();
@@ -244,19 +243,19 @@
 
                 if (aiResponse) {
 
+                    // Remove "AI responses..." footer for AI response section in overlay.
+                        // Should use cloned nodes...but am having issues with the content 
+                        // that is transfered, even with the subtree set to true.
+                    /*
+                        const getThis = Array.from(aiResponse.querySelectorAll('div'))
+                            .find(item => item.innerText.trim().toLowerCase() === 'ai responses may include mistakes. learn more');
 
-                // Remove "AI responses..." footer for AI response section in overlay.
-                    // Should use cloned nodes...but am having issues with the content 
-                    // that is transfered, even with the subtree set to true.
-                /*
-                    const getThis = Array.from(aiResponse.querySelectorAll('div'))
-                        .find(item => item.innerText.trim().toLowerCase() === 'ai responses may include mistakes. learn more');
-
-                    if (getThis) {
-                        console.log(getThis);
-                        hide(getThis);
-                    }
-                */
+                        if (getThis) {
+                            console.log(getThis);
+                            hide(getThis);
+                        }
+                    */
+                    aiResponse.style.zIndex = 130;
                     theOverlay.appendChild(aiResponse);
 
                 }
@@ -268,8 +267,9 @@
                     // theOverlay.appendChild(aiContainer);
 
                     if (findFAQContainer) {
-                        findFAQContainer.parentElement.style.width = '100%';
-                        setFAQContainer(findFAQContainer.parentElement);
+                        findFAQContainer.parentElement.parentElement.parentElement.style.width = '100%';
+                        findFAQContainer.parentElement.parentElement.parentElement.style.zIndex = 129;
+                        setFAQContainer(findFAQContainer.parentElement.parentElement.parentElement);
                         theOverlay.appendChild(getFAQContainer());
                     }
 
