@@ -10,27 +10,40 @@
 
 		<main class="flex flex-col items-center justify-end">
 
+			<section class="flex flex-col w-full">
+				<span id="plugin-status"></p>
+			</section>
+
 			<header class="flex flex-col items-center text-center">
-				<strong class="w-full">Only AI Search Results.</strong>
-				<label title="Turn the plugin on / off: If the button is red, the plugin is on." class="custom-checkbox flex flex-col items-center">
+				<label title="Turn the plugin on / off: If the button is green the plugin is on." class="custom-checkbox flex flex-col items-center">
 					<input type="checkbox" id="togglePlugin" data-title="showPlugin">
 					<div class="checkmark"></div>
 				</label>
 			</header>
 
-			<section id="advanced-settings">
+			<section id="advanced-settings" class="flex flex-col w-full">
 
-				<label title="If checked, only AI results will be shown when AI results are available.">
-					<input type="checkbox" id="toggleWebResults" data-title="showWebResults" checked="true">
-					Show Web Results
-				</label>
+				<details class="w-full" id="settings-details">
+					<summary>
+					</summary>
+					<div class="flex flex-col gap-1">
+						<label title="If checked, only AI results will be shown when AI results are available.">
+							<input type="checkbox" id="toggleWebResults" data-title="showWebResults" checked="true">
+							Show Web Results
+						</label>
+
+						<div class="flex flex-row justify-center">
+							<button id="resetSettings" class="reset">Reset settings</button>
+							<button id="reloadPage">Reload Page</button>
+						</div>
+					</div>
+				</details>
+
+				<a href="https://ihawp.com" target="_blank" title="View the tutorial on GitHub.">Tutorial</a>
 
 			</section>
 
-			<section class="flex flex-row justify-center">
-				<button id="resetSettings" class="reset">Reset settings</button>
-				<button id="reloadPage">Reload Page</button>
-			</section>
+			
 
 		</main>
 

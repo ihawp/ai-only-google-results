@@ -11,7 +11,7 @@ html {
 
 body {
     width: 300px;
-    height: 400px;
+    height: max-content;
     background-color: #222;
     color: #fff;
 
@@ -22,6 +22,10 @@ body > header {
   background-color: #444;
 }
 
+main > header {
+  height: 100px;
+}
+
 footer nav a {
   display: flex;
   flex-direction: row;
@@ -29,7 +33,7 @@ footer nav a {
   align-items: center;
   width: min-content;
   height: min-content;
-  margin: 0 0 1rem 1rem;
+  margin-bottom: 1rem;
   font-size: .9rem;
   text-decoration: none;
   opacity: .5;
@@ -76,6 +80,10 @@ button:focus {
   flex-direction: column;
 }
 
+.flex-row {
+  flex-direction: row;
+}
+
 .items-center {
   align-items: center;
 }
@@ -97,25 +105,49 @@ button:focus {
 }
 
 main {
-    height: calc(100% - 50px);
+  height: calc(100% - 50px);
+  width: 100%;
+  padding: 1rem;
 }
 
-ul {
-    list-style: none;
+ul, summary {
+  list-style: none;
+}
+
+summary {
+  cursor: pointer;
+}
+
+summary::-webkit-details-marker {
+  display: none;
+}
+
+#settings-details summary::before {
+  content: "Settings";
+  display: block;
+  margin-bottom: 1rem;
+}
+
+#settings-details:hover summary:hover::before {
+  text-decoration: underline;
+}
+
+#settings-details[open] summary::before {
+  content: "Close Settings";
 }
 
 a {
     color: white;
+    text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
 }
 
 /* Hide the default checkbox */
 .custom-checkbox input[type="checkbox"] {
     display: none;
-}
-
-
-.custom-checkbox {
-  width: min-content;
 }
 
 /* Create custom checkbox box */
@@ -124,34 +156,69 @@ a {
     width: 100px;
     height: 100px;
     background-color: red;
-    border: 2px solid red;
+    border: none;
     border-radius: 100px;
     vertical-align: middle;
-    margin-right: 8px;
     position: relative;
     transition: all 0.2s;
     cursor: pointer;
 }
 
-.custom-checkmark input[type="checkout"]:checked + .checkmark {
+.custom-checkbox .checkmark:focus {
+  outline: 1px solid white;
+}
+
+.custom-checkmark input[type="checkout"]:checked + .checkmark::after {
+    width: 100%;
+    height: 100%;
+    border-radius: 1000px;
+    background-color: limegreen;
+}
+
+.custom-checkbox input[type="checkbox"]:checked + .checkmark::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    border-radius: 1000px;
     background-color: limegreen;
     border-color: white;
 }
 
-/* When checkbox is checked, show a tick */
-.custom-checkbox input[type="checkbox"]:checked + .checkmark::after {
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 40px;
-    height: 80px;
-    border: solid #fff;
-    border-width: 0 5px 5px 0;
+.custom-checkbox input[type="checkbox"]:hover + .checkmark::after {
+  border-color: #fff;
 }
 
-/* Hover effect */
-.custom-checkbox:hover .checkmark {
-    background-color: #ddd;
+::-webkit-scrollbar {
+  background-color: transparent;
+  width: 7px;
+}
+
+::-webkit-scrollbar-track-piece {
+  background-color: white;
+  opacity: 20%;
+}
+
+details::before, details::after {
+  display: none;
+}
+
+#plugin-status {
+  position: relative;
+  --indicator-color: green;
+
+  margin-left: 1rem;
+}
+
+#plugin-status::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  background-color: var(--indicator-color);
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: -1rem;
 }

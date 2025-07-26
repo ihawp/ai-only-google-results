@@ -96,22 +96,6 @@
         displayOverlayButton(false);
     }
 
-    const insertMediaQueries = () => {
-        const styleElement = document.createElement('style');
-        styleElement.type = 'text/css';
-
-        styleElement.textContent = `
-            @media (min-width: 68em) {
-                #loaded-inner {
-                    width: 1080px;
-                    max-width: 1080px;
-                }
-            }
-        `;
-
-        document.head.appendChild(styleElement);
-    }
-
     function generateButton(innerText) {
         const button = document.createElement('button');
         button.style.position = 'fixed';
@@ -151,6 +135,7 @@
         inner.style.paddingBottom = '10rem';
         inner.style.display = 'flex';
         inner.style.flexDirection = 'column';
+        inner.style.gap = '1rem';
         inner.style.alignItems = 'center';
         inner.classList.add('light');
         return inner;
@@ -225,8 +210,6 @@
 
         return overlay;
     }
-
-    insertMediaQueries();
 
     const generatedOverlay = await generateOverlay();
 

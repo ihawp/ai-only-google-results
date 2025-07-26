@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const togglePlugin = document.getElementById('togglePlugin');
     const resetSettings = document.getElementById('resetSettings');
     const reloadPage = document.getElementById('reloadPage');
+    const pluginStatus = document.getElementById('plugin-status');
 
     // Load stored setting.
     chrome.storage.local.get(['showWebResults', 'showPlugin'], result => {
@@ -17,18 +18,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
         toggleWebResults.checked = showWebResults;
         togglePlugin.checked = showPlugin;
+
+        updatePluginStatus(getPluginStatusData(showPlugin));
     });
 
     const toggleChange = event => {
         const bool = event.currentTarget.checked;
         const title = event.currentTarget.dataset.title;
         chrome.storage.local.set({ [title]: bool });
+
+        if (title === 'showPlugin') {
+
+            updatePluginStatus(getPluginStatusData(bool));
+
+        }
+
     }
 
     const resetUserSettings = () => {
         toggleWebResults.checked = true;
         togglePlugin.checked = true;
         chrome.storage.local.set(defaultSettings);
+        updatePluginStatus(getPluginStatusData(true));
+    }
+
+    const getPluginStatusData = bool => bool ? {
+        text: 'Plugin On',
+        color: 'limegreen',
+    } : {
+        text: 'Plugin Off',
+        color: 'red'
+    }
+
+    const updatePluginStatus = data => {
+        pluginStatus.innerText = data.text;
+        pluginStatus.style.setProperty('--indicator-color', data.color);
     }
 
     const reloadThePage = () => {
