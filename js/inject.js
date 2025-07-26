@@ -364,12 +364,9 @@
         window.addEventListener('scroll', event => {
             if (getOverlayOpen()) {
                 document.body.style.overflow = 'scroll';
-
                 const scrollTop = document.documentElement.scrollTop;
                 setLastScrollTop(scrollTop);
-                
                 window.scrollTo(0, 0);
-                
                 document.body.style.overflow = 'hidden';
             }
         });
