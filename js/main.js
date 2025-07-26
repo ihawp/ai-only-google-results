@@ -81,4 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
         togglePlugin.addEventListener('change', toggleChange);
         togglePlugin.addEventListener('keydown', settingKeydownEvent);
     }
+
+    
 });

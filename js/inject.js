@@ -71,7 +71,6 @@
         document.body.style.overflow = 'scroll';
 
         const scrollTop = document.documentElement.scrollTop;
-        console.log(scrollTop);
         setLastScrollTop(scrollTop);
 
         window.scrollTo(0, 0);
@@ -111,6 +110,7 @@
         button.style.cursor = 'pointer';
         button.style.zIndex = 126;
         button.innerText = innerText;
+        button.setAttribute('tabindex', '-1');
         button.classList.add('light');
         return button;
     }
@@ -160,6 +160,32 @@
 
     }
 
+    function trapFocus(container) {
+        const focusableSelectors = 'a[href], button, textarea, input, select, [tabindex]:not([tabindex="-1"])';
+        const focusables = container.querySelectorAll(focusableSelectors);
+
+        if (focusables.length === 0) return;
+
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+
+        container.addEventListener('keydown', function (e) {
+            if (e.key !== 'Tab') return;
+
+            if (e.shiftKey) {
+                if (document.activeElement === first) {
+                    e.preventDefault();
+                    last.focus();
+                }
+            } else {
+                if (document.activeElement === last) {
+                    e.preventDefault();
+                    first.focus();
+                }
+            }
+        });
+    }
+
     async function generateOverlay() {
         const result = await new Promise(resolve => {
             chrome.storage.local.get(['showWebResults', 'showPlugin'], data => {
@@ -187,6 +213,7 @@
         overlay.style.alignItems = 'center';
         overlay.style.zIndex = 125;
         overlay.style.overflow = 'scroll';
+        overlay.setAttribute('tabindex', '-1');
         overlay.classList.add('light');
 
         const innerContainer = generateInnerContainer();
@@ -281,7 +308,7 @@
 
                     setOverlayContainer(overlayContainer);
 
-                    document.body.appendChild(getOverlayContainer());
+                    document.body.appendChild(overlayContainer);
 
                     if (getDisplayNavButtons()) {
                         const closeButton = getCloseButton();
@@ -290,6 +317,9 @@
                     }
 
                     openOverlay(new Event('click'));
+
+                    overlayContainer.focus();
+                    trapFocus(overlayContainer);
 
                     // Remove h1 here.
                     if (h1 && h1.nextElementSibling?.nextElementSibling) {
@@ -301,6 +331,19 @@
                 observer.disconnect();
             }
         }
+
+        window.addEventListener('scroll', event => {
+            if (getOverlayOpen()) {
+                document.body.style.overflow = 'scroll';
+
+                const scrollTop = document.documentElement.scrollTop;
+                setLastScrollTop(scrollTop);
+                
+                window.scrollTo(0, 0);
+                
+                document.body.style.overflow = 'hidden';
+            }
+        });
 
         const observer = new MutationObserver(observerCallback);
         const config = { attributes: true, childList: true, subtree: true };
