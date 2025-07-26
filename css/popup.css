@@ -54,7 +54,7 @@ button {
   cursor: pointer;
   background: transparent;
 
-  border: 1px solid white;
+  border: 1px solid;
   color: white;
   border-radius: 100px;
 }
@@ -64,7 +64,7 @@ button:focus {
 }
 
 #resetSettings {
-  background-color: red;
+  font-weight: 600;
 }
 
 #reloadPage {
@@ -98,6 +98,14 @@ button:focus {
 
 .text-center {
   text-align: center;
+}
+
+.gap-1 {
+  gap: 1rem;
+}
+
+.gap-2 {
+  gap: 2rem;
 }
 
 .w-full {
@@ -164,31 +172,9 @@ a:hover {
     cursor: pointer;
 }
 
-.custom-checkbox .checkmark:focus {
-  outline: 1px solid white;
-}
-
-.custom-checkmark input[type="checkout"]:checked + .checkmark::after {
-    width: 100%;
-    height: 100%;
+.custom-checkbox input[type="checkbox"]:checked + .checkmark {
     border-radius: 1000px;
     background-color: limegreen;
-}
-
-.custom-checkbox input[type="checkbox"]:checked + .checkmark::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    height: 100%;
-    border-radius: 1000px;
-    background-color: limegreen;
-    border-color: white;
-}
-
-.custom-checkbox input[type="checkbox"]:hover + .checkmark::after {
-  border-color: #fff;
 }
 
 ::-webkit-scrollbar {
@@ -221,4 +207,8 @@ details::before, details::after {
   top: 50%;
   transform: translateY(-50%);
   left: -1rem;
+}
+
+#advanced-settings {
+
 }

@@ -9,7 +9,7 @@ Explore the future possibilities of search and possible implementations of user 
 Worrysome:
 - HARD(er): Only display the popup loader on the search results page (not images, short videos, etc).
     - Use the navigation bar, maybe there are active classes on the highlighted current page.
-- UI for popup.html should be beautified.
+- Checkbox for power on/off is not focusable.
 
 General:
 - Add custom loading animations.

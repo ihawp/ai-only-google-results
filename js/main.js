@@ -28,9 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
         chrome.storage.local.set({ [title]: bool });
 
         if (title === 'showPlugin') {
-
             updatePluginStatus(getPluginStatusData(bool));
-
         }
 
     }
@@ -43,10 +41,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const getPluginStatusData = bool => bool ? {
-        text: 'Plugin On',
+        text: 'On',
         color: 'limegreen',
     } : {
-        text: 'Plugin Off',
+        text: 'Off',
         color: 'red'
     }
 

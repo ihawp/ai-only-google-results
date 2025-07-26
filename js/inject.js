@@ -192,7 +192,6 @@
         setInnerContainer(innerContainer);
 
         if (showWebResults) {
-            console.log('happening');
             const openButton = generateOpenButton();
             const closeButton = generateCloseButton();
 
