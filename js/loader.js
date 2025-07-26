@@ -1,8 +1,19 @@
-(() => {
+(async () => {
     const tracker = {
         loader: undefined,
         overlay: undefined,
     };
+
+    const result = await new Promise(resolve => {
+        chrome.storage.local.get(['showPlugin'], data => {
+            resolve(data);
+        });
+    });
+
+    if (result) {
+        const doPlugin = result.showPlugin ?? false;
+        if (!doPlugin) return;
+    }
 
     function generateOverlay() {
         const overlay = document.createElement('div');

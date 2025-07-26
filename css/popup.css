@@ -1,0 +1,73 @@
+html {
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    width: 300px;
+    height: 400px;
+    background-color: limegreen;
+}
+
+body > header, footer {
+    height: 25px;
+    max-height: 25px;
+    background-color: #222;
+}
+
+main {
+    height: calc(100% - 50px);
+}
+
+ul {
+    list-style: none;
+}
+
+/* Hide the default checkbox */
+.custom-checkbox input[type="checkbox"] {
+    display: none;
+}
+
+/* Create custom checkbox box */
+.custom-checkbox .checkmark {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    background-color: red;
+    border: 2px solid red;
+    border-radius: 100px;
+    vertical-align: middle;
+    margin-right: 8px;
+    position: relative;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.custom-checkmark input[type="checkout"]:checked {
+    background-color: limegreen;
+    border-color: white;
+}
+
+/* When checkbox is checked, show a tick */
+.custom-checkbox input[type="checkbox"]:checked + .checkmark::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%), rotate(45deg);
+    width: 40px;
+    height: 80px;
+    border: solid #fff;
+    border-width: 0 5px 5px 0;
+}
+
+/* Hover effect */
+.custom-checkbox:hover .checkmark {
+    background-color: #ddd;
+}

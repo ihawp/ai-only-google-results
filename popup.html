@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 	<head>
-		<link rel="stylesheet" href="popup.css">
+		<link rel="stylesheet" href="./css/popup.css">
 	</head>
 	<body>
 
@@ -12,21 +12,26 @@
 
 			<header>
 				Only AI Search Results.
-				<label title="Turn the plugin on / off: If the button is green, the plugin is on.">
+				<label title="Turn the plugin on / off: If the button is green, the plugin is on." class="custom-checkbox">
 					<input type="checkbox" id="togglePlugin" data-title="showPlugin">
-					On
+					<div class="checkmark">
+						content
+					</div>
 				</label>
 			</header>
 
-			<section>
+			<section id="advanced-settings">
+
 				<label title="If checked, only AI results will be shown when AI results are available.">
 					<input type="checkbox" id="toggleWebResults" data-title="showWebResults" checked="true">
 					Show Web Results
 				</label>
+
 			</section>
 
 			<section>
 				<button id="resetSettings">Reset settings</button>
+				<button id="reloadPage">Reload Page</button>
 			</section>
 
 		</main>
@@ -41,6 +46,6 @@
 			</nav>
 		</footer>
 
-		<script src="main.js"></script>
+		<script src="./js/main.js"></script>
 	</body>
 </html>

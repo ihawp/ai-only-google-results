@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const toggleWebResults = document.getElementById('toggleWebResults');
     const togglePlugin = document.getElementById('togglePlugin');
     const resetSettings = document.getElementById('resetSettings');
+    const reloadPage = document.getElementById('reloadPage');
 
     // Load stored setting.
     chrome.storage.local.get(['showWebResults', 'showPlugin'], result => {
@@ -30,7 +31,15 @@ document.addEventListener('DOMContentLoaded', () => {
         chrome.storage.local.set(defaultSettings);
     }
 
+    const reloadThePage = () => {
+        chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+            chrome.tabs.reload(tabs[0].id);
+        });
+    }
+
     resetSettings.addEventListener('click', resetUserSettings);
+
+    reloadPage.addEventListener('click', reloadThePage);
 
     // Update setting on toggle change.
     toggleWebResults.addEventListener('change', toggleChange);

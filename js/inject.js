@@ -123,7 +123,7 @@
         button.style.right = '1rem';
         button.style.padding = '1rem 3rem';
         button.style.cursor = 'pointer';
-        button.style.zIndex = 4444;
+        button.style.zIndex = 126;
         button.innerText = innerText;
         button.classList.add('light');
         return button;
@@ -176,15 +176,12 @@
     async function generateOverlay() {
         const result = await new Promise(resolve => {
             chrome.storage.local.get(['showWebResults', 'showPlugin'], data => {
-                console.log(data);
                 resolve(data);
             });
         });
 
         const showWebResults = result.showWebResults ?? false;
         setDisplayNavButtons(showWebResults);
-
-        console.log(showWebResults);
 
         const showPlugin = result.showPlugin ?? false;
         setShowPlugin(showPlugin);
@@ -201,7 +198,7 @@
         overlay.style.display = 'flex';
         overlay.style.flexDirection = 'column';
         overlay.style.alignItems = 'center';
-        overlay.style.zIndex = 4343;
+        overlay.style.zIndex = 125;
         overlay.style.overflowX = 'hidden';
         overlay.style.overflowY = 'scroll';
         overlay.classList.add('light');

@@ -10,16 +10,19 @@
   "content_scripts": [
     {
       "matches": ["*://www.google.com/search*", "*://www.google.ca/search*", "*://google.com/search*", "*://google.ca/search*"],
-      "js": ["loader.js"],
-      "css": ["loader.css"],
+      "js": ["./js/loader.js"],
+      "css": ["./css/loader.css"],
       "run_at": "document_start"
     },
     {
       "matches": ["*://www.google.com/search*", "*://www.google.ca/search*", "*://google.com/search*", "*://google.ca/search*"],
-      "js": ["inject.js"],
-      "css": ["inject.css"],
+      "js": ["./js/inject.js"],
+      "css": ["./css/inject.css"],
       "run_at": "document_end"
     }
   ],
-  "permissions": ["storage", "activeTab"]
+  "permissions": ["storage", "activeTab"],
+  "background": {
+    "service_worker": "./js/service_worker.js"
+  }
 }
