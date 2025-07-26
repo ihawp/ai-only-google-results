@@ -12,7 +12,7 @@ html {
 body {
     width: 300px;
     height: max-content;
-    background-color: #222;
+    background-color: #232323;
     color: #fff;
     font-size: 1rem;
 }
@@ -211,12 +211,14 @@ details::before, details::after {
   position: relative;
   --indicator-color: green;
   margin-left: 1rem;
+  user-select: none;
 }
 
 #plugin-status::before {
   content: '';
   width: 5px;
   height: 5px;
+  border-radius: 5px;
   background-color: var(--indicator-color);
   position: absolute;
   top: 50%;

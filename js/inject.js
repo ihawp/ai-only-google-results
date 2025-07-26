@@ -61,18 +61,22 @@
         event.preventDefault();
         if (getOverlayOpen()) return;
         const overlay = getOverlayContainer();
-        document.body.style.overflow = 'hidden';
 
-        const { scrollTop } = document.documentElement;
+        document.body.style.overflow = 'scroll';
+
+        const scrollTop = document.documentElement.scrollTop;
+        console.log(scrollTop);
         setLastScrollTop(scrollTop);
         document.documentElement.scrollTop = 0;
+        window.scrollTo(0, 0);
+
+        document.body.style.overflow = 'hidden';
 
         show(overlay, 'flex');
         setOverlayContainer(overlay);
         setOverlayOpen(true);
 
         displayOverlayButton(true);
-
     }
 
     const closeOverlay = event => {
@@ -80,18 +84,16 @@
 
         if (!getOverlayOpen()) return;
 
-        document.body.style.overflow = 'auto';
-
         // Update the overlay.
         const overlay = getOverlayContainer();
         hide(overlay);
         setOverlayContainer(overlay);
         setOverlayOpen(false);
 
+        document.body.style.overflow = 'scroll';
+
         const scrollTop = getLastScrollTop();
-        if (scrollTop != document.documentElement.scrollTop) {
-            document.documentElement.scrollTop = scrollTop;
-        }
+        window.scrollTo({ top: scrollTop, behavior: 'auto' });
 
         displayOverlayButton(false);
     }
@@ -210,6 +212,21 @@
         return overlay;
     }
 
+    window.addEventListener('scroll', () => {
+        if (getOverlayOpen()) {
+            const scrollTop = document.documentElement.scrollTop;
+            console.log(scrollTop);
+            setLastScrollTop(scrollTop);
+            document.documentElement.scrollTop = 0;
+            window.scrollTo(0, 0);
+        }
+    }, { passive: true });
+
+    document.body.style.overflow = 'scroll';
+    document.documentElement.scrollTop = 0;
+    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: "auto" });
+
     const generatedOverlay = await generateOverlay();
 
     if (generatedOverlay) {
@@ -286,6 +303,8 @@
                         show(closeButton, 'block');
                         setCloseButton(closeButton);
                     }
+
+
 
                     openOverlay(new Event('click'));
 
